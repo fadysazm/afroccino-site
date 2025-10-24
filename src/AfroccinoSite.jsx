@@ -138,9 +138,9 @@ export default function AfroccinoSite() {
       >
         <h3 className="text-xl font-light mb-4 text-white">About</h3>
         <p className="text-gray-400 leading-relaxed">
-          I’m Fady Azmy — I used to chase the world’s light. Now I capture the
-          one that lives at home. My work blends a traveler’s eye with a father’s
-          heart — turning family life into something artful and real.
+          I’m Fady Azmy — I used to chase new places; now I chase the stories unfolding at home. 
+          My photography celebrates family — the energy, the love, and the fleeting seconds that become 
+          everything.
         </p>
       </motion.section>
 
