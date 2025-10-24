@@ -12,26 +12,23 @@ export default function AfroccinoSite() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // 🎥 Parallax + cinematic motion
-  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1.05, 1.1] : [1, 1.15]);
+  // Add slightly more zoom so image always covers viewport
+  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1.2, 1.25] : [1, 1.15]);
   const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 60] : [0, 100]);
 
-  // ⚡ Faster, stronger horizontal pan (mobile only)
-  // Starts far left (-10%) → moves right quickly to +25% → gently eases back to +10%
+  // Start from center (0%) to far right (+25%) — no black bar
   const rawX = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    isMobile ? ["-10%", "25%", "10%"] : ["0%", "0%", "0%"]
+    isMobile ? ["0%", "25%", "15%"] : ["0%", "0%", "0%"]
   );
 
-  // Make the movement feel alive and responsive
   const x = useSpring(rawX, {
-    stiffness: 100, // faster acceleration
-    damping: 18,    // smoother deceleration
-    mass: 0.4,      // light, responsive feel
+    stiffness: 120, // faster acceleration
+    damping: 15,
+    mass: 0.4,
   });
 
-  // Fade out hero text on scroll
   const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
 
   const gallery = Array.from({ length: 9 }).map((_, i) => ({
@@ -41,7 +38,7 @@ export default function AfroccinoSite() {
   }));
 
   return (
-    <div className="min-h-screen bg-black text-gray-100 antialiased scroll-smooth">
+    <div className="min-h-screen bg-black text-gray-100 antialiased scroll-smooth overflow-hidden">
       {/* HEADER */}
       <header className="absolute top-0 left-0 right-0 z-30 px-6 py-8">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -73,11 +70,10 @@ export default function AfroccinoSite() {
           src={`${process.env.PUBLIC_URL}/images/hero.jpg`}
           alt="Afroccino Hero"
           style={{ scale, y, x }}
-          className="absolute inset-0 w-full h-full object-cover md:object-center object-[0%_25%] md:object-[50%_50%] opacity-90"
+          className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
           loading="eager"
         />
 
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70"></div>
 
         <motion.div
