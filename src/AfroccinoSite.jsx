@@ -12,21 +12,26 @@ export default function AfroccinoSite() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // 🎥 Smooth parallax and cinematic scroll
-  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1.03] : [1, 1.15]);
-  const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 40] : [0, 100]);
+  // 🎥 Parallax + cinematic motion
+  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1.05, 1.1] : [1, 1.15]);
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 60] : [0, 100]);
 
-  // ⚡ Natural camera-slide feel with easing
+  // ⚡ Faster, stronger horizontal pan (mobile only)
+  // Starts far left (-10%) → moves right quickly to +25% → gently eases back to +10%
   const rawX = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    isMobile ? ["-15%", "15%", "0%"] : ["0%", "0%", "0%"]
+    isMobile ? ["-10%", "25%", "10%"] : ["0%", "0%", "0%"]
   );
 
-  // Add smoothing with a spring for realistic movement
-  const x = useSpring(rawX, { stiffness: 60, damping: 20, mass: 0.6 });
+  // Make the movement feel alive and responsive
+  const x = useSpring(rawX, {
+    stiffness: 100, // faster acceleration
+    damping: 18,    // smoother deceleration
+    mass: 0.4,      // light, responsive feel
+  });
 
-  // Hero text fades out on scroll
+  // Fade out hero text on scroll
   const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
 
   const gallery = Array.from({ length: 9 }).map((_, i) => ({
@@ -72,6 +77,7 @@ export default function AfroccinoSite() {
           loading="eager"
         />
 
+        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70"></div>
 
         <motion.div
