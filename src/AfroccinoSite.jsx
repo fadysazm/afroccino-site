@@ -10,10 +10,14 @@ export default function AfroccinoSite() {
   return (
     <div className="min-h-screen bg-black text-gray-100 antialiased">
       <header className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <div className="text-2xl font-semibold tracking-wide text-white">Afroccino</div>
-          <div className="text-xs text-gray-400">by Fady Azmy</div>
-        </div>
+        <a href="/" className="flex items-center">
+          <img
+            src={`${process.env.PUBLIC_URL}/images/afroccino-logo.png`}
+            alt="Afroccino Photography"
+            className="h-60 w-auto object-contain"
+            style={{ objectPosition: "left center" }}
+          />
+        </a>
         <nav className="space-x-6 text-sm text-gray-300">
           <a href="#work" className="hover:text-white transition-colors">Work</a>
           <a href="#about" className="hover:text-white transition-colors">About</a>
@@ -25,11 +29,10 @@ export default function AfroccinoSite() {
         <section className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-20">
           <div className="space-y-6">
             <h1 className="text-5xl md:text-6xl font-extralight leading-tight text-white">
-              Candid family photography with calm, timeless design.
+              For the little moments that mean everything.
             </h1>
             <p className="text-lg text-gray-400 max-w-xl">
-              I capture quiet moments, genuine smiles and the light between them. Based in Toronto —
-              available for families and editorial work.
+              I photograph the kind of moments you do not pose for — the warmth, the laughter, the love that lives between frames. Toronto based, available for families and honest stories.
             </p>
             <div className="flex items-center space-x-4">
               <a href="#contact" className="inline-block px-6 py-3 border border-gray-100 rounded-md text-sm font-medium hover:bg-white hover:text-black transition-colors">
@@ -72,9 +75,10 @@ export default function AfroccinoSite() {
           <div className="max-w-3xl">
             <h3 className="text-xl font-light mb-4 text-white">About</h3>
             <p className="text-gray-400 leading-relaxed">
-              I'm Fady Azmy — a former travel photographer turned family and portrait photographer. I
-              aim for simplicity and honesty: minimal direction, natural light, and compositions that
-              breathe. My sessions focus on connection and storytelling rather than stiff posing.
+              I’m Fady Azmy — I used to chase new places; now I chase the stories unfolding at home. 
+              My photography celebrates family — the energy, the love, and the fleeting seconds that become 
+              everything.
+              Every frame is about movement, emotion, and the beauty that happens between moments.
             </p>
           </div>
         </section>
@@ -90,7 +94,7 @@ export default function AfroccinoSite() {
               <textarea className="border border-gray-700 bg-black text-gray-200 rounded-md px-4 py-3 h-32 placeholder-gray-500" placeholder="Message" />
               <div className="flex items-center space-x-4">
                 <button type="submit" className="px-6 py-3 rounded-md border border-gray-100 text-sm font-medium text-white hover:bg-white hover:text-black transition-colors">Send</button>
-                <span className="text-sm text-gray-500">Or email: <a href="mailto:hello@afroccino.com" className="underline hover:text-white">hello@afroccino.com</a></span>
+                <span className="text-sm text-gray-500">Or email: <a href="mailto:afroccino.photography@gmail.com" className="underline hover:text-white">afroccino.photography@gmail.com</a></span>
               </div>
             </form>
           </div>
