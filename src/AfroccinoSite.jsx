@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 
 export default function AfroccinoSite() {
   const { scrollYProgress } = useScroll();
@@ -12,12 +12,21 @@ export default function AfroccinoSite() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Motion transforms for scroll
-  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1.02] : [1, 1.15]);
+  // 🎥 Smooth parallax and cinematic scroll
+  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1.03] : [1, 1.15]);
   const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 40] : [0, 100]);
-  const x = useTransform(scrollYProgress, [0, 0.5, 1], isMobile ? ["0%", "10%", "0%"] : ["0%", "0%", "0%"]);
 
-  // Fade out hero text gradually as user scrolls
+  // ⚡ Natural camera-slide feel with easing
+  const rawX = useTransform(
+    scrollYProgress,
+    [0, 0.5, 1],
+    isMobile ? ["-15%", "15%", "0%"] : ["0%", "0%", "0%"]
+  );
+
+  // Add smoothing with a spring for realistic movement
+  const x = useSpring(rawX, { stiffness: 60, damping: 20, mass: 0.6 });
+
+  // Hero text fades out on scroll
   const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
 
   const gallery = Array.from({ length: 9 }).map((_, i) => ({
@@ -59,14 +68,12 @@ export default function AfroccinoSite() {
           src={`${process.env.PUBLIC_URL}/images/hero.jpg`}
           alt="Afroccino Hero"
           style={{ scale, y, x }}
-          className="absolute inset-0 w-full h-full object-cover md:object-center object-[50%_25%] md:object-[50%_50%] opacity-90"
+          className="absolute inset-0 w-full h-full object-cover md:object-center object-[0%_25%] md:object-[50%_50%] opacity-90"
           loading="eager"
         />
 
-        {/* Gradient overlay for cinematic fade */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70"></div>
 
-        {/* HERO TEXT */}
         <motion.div
           style={{ opacity: heroOpacity }}
           className="relative z-10 flex flex-col justify-center items-start h-full max-w-5xl mx-auto px-6 space-y-6"
