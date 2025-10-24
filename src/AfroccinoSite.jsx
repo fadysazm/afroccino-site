@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function AfroccinoSite() {
   const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]); // subtle zoom on scroll
-  const y = useTransform(scrollYProgress, [0, 1], [0, 100]); // parallax shift
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Use different scroll animations depending on device size
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    isMobile ? [1, 1.02] : [1, 1.15] // less zoom on mobile
+  );
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 40] : [0, 100]); // smaller parallax shift
 
   const gallery = Array.from({ length: 9 }).map((_, i) => ({
     id: i + 1,
@@ -141,6 +155,7 @@ export default function AfroccinoSite() {
           I’m Fady Azmy — I used to chase new places; now I chase the stories unfolding at home. 
           My photography celebrates family — the energy, the love, and the fleeting seconds that become 
           everything.
+          Every frame is about movement, emotion, and the beauty that happens between moments.
         </p>
       </motion.section>
 
