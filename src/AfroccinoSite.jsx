@@ -12,20 +12,20 @@ export default function AfroccinoSite() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Add slightly more zoom so image always covers viewport
-  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1.2, 1.25] : [1, 1.15]);
+  // More zoom for safety and fluid movement
+  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1.25, 1.3] : [1, 1.15]);
   const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 60] : [0, 100]);
 
-  // Start from center (0%) to far right (+25%) — no black bar
+  // Start slightly left, move right (fast and smooth)
   const rawX = useTransform(
     scrollYProgress,
     [0, 0.5, 1],
-    isMobile ? ["0%", "25%", "15%"] : ["0%", "0%", "0%"]
+    isMobile ? ["-10%", "10%", "5%"] : ["0%", "0%", "0%"]
   );
 
   const x = useSpring(rawX, {
-    stiffness: 120, // faster acceleration
-    damping: 15,
+    stiffness: 130, // faster
+    damping: 16,
     mass: 0.4,
   });
 
@@ -70,7 +70,7 @@ export default function AfroccinoSite() {
           src={`${process.env.PUBLIC_URL}/images/hero.jpg`}
           alt="Afroccino Hero"
           style={{ scale, y, x }}
-          className="absolute inset-0 w-full h-full object-cover object-center opacity-90"
+          className="absolute inset-0 w-full h-full object-cover object-left md:object-center opacity-90"
           loading="eager"
         />
 
