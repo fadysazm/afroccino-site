@@ -12,13 +12,13 @@ export default function AfroccinoSite() {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Use different scroll animations depending on device size
-  const scale = useTransform(
-    scrollYProgress,
-    [0, 1],
-    isMobile ? [1, 1.02] : [1, 1.15] // less zoom on mobile
-  );
-  const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 40] : [0, 100]); // smaller parallax shift
+  // Motion transforms for scroll
+  const scale = useTransform(scrollYProgress, [0, 1], isMobile ? [1, 1.02] : [1, 1.15]);
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? [0, 40] : [0, 100]);
+  const x = useTransform(scrollYProgress, [0, 0.5, 1], isMobile ? ["0%", "10%", "0%"] : ["0%", "0%", "0%"]);
+
+  // Fade out hero text gradually as user scrolls
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
 
   const gallery = Array.from({ length: 9 }).map((_, i) => ({
     id: i + 1,
@@ -58,13 +58,19 @@ export default function AfroccinoSite() {
         <motion.img
           src={`${process.env.PUBLIC_URL}/images/hero.jpg`}
           alt="Afroccino Hero"
-          style={{ scale, y }}
-          className="absolute inset-0 w-full h-full object-cover opacity-90"
+          style={{ scale, y, x }}
+          className="absolute inset-0 w-full h-full object-cover md:object-center object-[50%_25%] md:object-[50%_50%] opacity-90"
+          loading="eager"
         />
 
+        {/* Gradient overlay for cinematic fade */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70"></div>
 
-        <div className="relative z-10 flex flex-col justify-center items-start h-full max-w-5xl mx-auto px-6 space-y-6">
+        {/* HERO TEXT */}
+        <motion.div
+          style={{ opacity: heroOpacity }}
+          className="relative z-10 flex flex-col justify-center items-start h-full max-w-5xl mx-auto px-6 space-y-6"
+        >
           <motion.h1
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
@@ -102,7 +108,7 @@ export default function AfroccinoSite() {
               Learn More
             </a>
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       {/* WORK SECTION */}
@@ -154,8 +160,7 @@ export default function AfroccinoSite() {
         <p className="text-gray-400 leading-relaxed">
           I’m Fady Azmy — I used to chase new places; now I chase the stories unfolding at home. 
           My photography celebrates family — the energy, the love, and the fleeting seconds that become 
-          everything.
-          Every frame is about movement, emotion, and the beauty that happens between moments.
+          everything. Every frame is about movement, emotion, and the beauty that happens between moments.
         </p>
       </motion.section>
 
