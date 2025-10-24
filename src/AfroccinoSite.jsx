@@ -1,6 +1,11 @@
 import React from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 export default function AfroccinoSite() {
+  const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.15]); // subtle zoom on scroll
+  const y = useTransform(scrollYProgress, [0, 1], [0, 100]); // parallax shift
+
   const gallery = Array.from({ length: 9 }).map((_, i) => ({
     id: i + 1,
     src: `/images/portfolio-${i + 1}.jpg`,
@@ -8,102 +13,199 @@ export default function AfroccinoSite() {
   }));
 
   return (
-    <div className="min-h-screen bg-black text-gray-100 antialiased">
-      <header className="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
-        <a href="/" className="flex items-center">
-          <img
-            src={`${process.env.PUBLIC_URL}/images/afroccino-logo.png`}
-            alt="Afroccino Photography"
-            className="h-60 w-auto object-contain"
-            style={{ objectPosition: "left center" }}
-          />
-        </a>
-        <nav className="space-x-6 text-sm text-gray-300">
-          <a href="#work" className="hover:text-white transition-colors">Work</a>
-          <a href="#about" className="hover:text-white transition-colors">About</a>
-          <a href="#contact" className="hover:text-white transition-colors">Contact</a>
-        </nav>
+    <div className="min-h-screen bg-black text-gray-100 antialiased scroll-smooth">
+      {/* HEADER */}
+      <header className="absolute top-0 left-0 right-0 z-30 px-6 py-8">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <a href="/" className="flex items-center">
+            <img
+              src={`${process.env.PUBLIC_URL}/images/afroccino-logo.png`}
+              alt="Afroccino Photography"
+              className="h-[180px] w-auto object-contain drop-shadow-lg"
+            />
+          </a>
+
+          <nav className="space-x-6 text-sm text-gray-200 drop-shadow">
+            <a href="#work" className="hover:text-white transition-colors">
+              Work
+            </a>
+            <a href="#about" className="hover:text-white transition-colors">
+              About
+            </a>
+            <a href="#contact" className="hover:text-white transition-colors">
+              Contact
+            </a>
+          </nav>
+        </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6">
-        <section className="relative grid grid-cols-1 lg:grid-cols-2 gap-12 items-center py-20">
-          <div className="space-y-6">
-            <h1 className="text-5xl md:text-6xl font-extralight leading-tight text-white">
-              For the little moments that mean everything.
-            </h1>
-            <p className="text-lg text-gray-400 max-w-xl">
-              I photograph the kind of moments you do not pose for — the warmth, the laughter, the love that lives between frames. Toronto based, available for families and honest stories.
-            </p>
-            <div className="flex items-center space-x-4">
-              <a href="#contact" className="inline-block px-6 py-3 border border-gray-100 rounded-md text-sm font-medium hover:bg-white hover:text-black transition-colors">
-                Book a session
-              </a>
-              <a href="#work" className="text-sm text-gray-400 hover:text-white transition-colors">See recent work</a>
-            </div>
-          </div>
+      {/* HERO SECTION */}
+      <section className="relative h-screen w-full overflow-hidden">
+        <motion.img
+          src={`${process.env.PUBLIC_URL}/images/hero.jpg`}
+          alt="Afroccino Hero"
+          style={{ scale, y }}
+          className="absolute inset-0 w-full h-full object-cover opacity-90"
+        />
 
-          <div className="rounded-2xl overflow-hidden shadow-2xl">
-            <img
-              src="/images/hero.jpg"
-              alt="Hero"
-              className="w-full h-96 object-cover opacity-90 hover:opacity-100 transition-opacity"
-            />
-          </div>
-        </section>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70"></div>
 
-        <section id="work" className="py-12">
-          <div className="flex items-baseline justify-between mb-8">
-            <h2 className="text-2xl font-light text-white">Selected work</h2>
-            <a href="#contact" className="text-sm text-gray-400 hover:text-white transition-colors">Inquire</a>
-          </div>
+        <div className="relative z-10 flex flex-col justify-center items-start h-full max-w-5xl mx-auto px-6 space-y-6">
+          <motion.h1
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            className="text-6xl md:text-7xl font-extralight leading-tight text-white drop-shadow-lg"
+          >
+            For the little moments that mean everything.
+          </motion.h1>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {gallery.map((img) => (
-              <figure key={img.id} className="group overflow-hidden rounded-xl">
-                <img
-                  src={img.src}
-                  alt={img.alt}
-                  className="w-full h-72 object-cover transform transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100 opacity-90"
-                />
-                <figcaption className="mt-2 text-xs text-gray-500">Family session — candid moments</figcaption>
-              </figure>
-            ))}
-          </div>
-        </section>
+          <motion.p
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2 }}
+            className="text-lg md:text-xl text-gray-300 max-w-2xl drop-shadow"
+          >
+            Candid family photography — real, emotional, and full of life.
+          </motion.p>
 
-        <section id="about" className="py-12 border-t border-gray-800">
-          <div className="max-w-3xl">
-            <h3 className="text-xl font-light mb-4 text-white">About</h3>
-            <p className="text-gray-400 leading-relaxed">
-              I’m Fady Azmy — I used to chase new places; now I chase the stories unfolding at home. 
-              My photography celebrates family — the energy, the love, and the fleeting seconds that become 
-              everything.
-              Every frame is about movement, emotion, and the beauty that happens between moments.
-            </p>
-          </div>
-        </section>
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.4 }}
+            className="flex items-center space-x-4"
+          >
+            <a
+              href="#work"
+              className="inline-block px-8 py-3 border border-white rounded-md text-sm font-medium hover:bg-white hover:text-black transition-colors"
+            >
+              View Work
+            </a>
+            <a
+              href="#about"
+              className="text-sm text-gray-300 hover:text-white transition-colors"
+            >
+              Learn More
+            </a>
+          </motion.div>
+        </div>
+      </section>
 
-        <section id="contact" className="py-12">
-          <div className="max-w-2xl">
-            <h3 className="text-xl font-light mb-4 text-white">Contact</h3>
-            <p className="text-gray-400 mb-6">For bookings and enquiries — email or use the form below.</p>
+      {/* WORK SECTION */}
+      <motion.section
+        id="work"
+        className="min-h-screen py-20 max-w-6xl mx-auto px-6"
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <div className="flex items-baseline justify-between mb-8">
+          <h2 className="text-2xl font-light text-white">Selected Work</h2>
+          <a
+            href="#contact"
+            className="text-sm text-gray-400 hover:text-white transition-colors"
+          >
+            Inquire
+          </a>
+        </div>
 
-            <form className="grid grid-cols-1 gap-4">
-              <input className="border border-gray-700 bg-black text-gray-200 rounded-md px-4 py-3 placeholder-gray-500" placeholder="Name" />
-              <input className="border border-gray-700 bg-black text-gray-200 rounded-md px-4 py-3 placeholder-gray-500" placeholder="Email" />
-              <textarea className="border border-gray-700 bg-black text-gray-200 rounded-md px-4 py-3 h-32 placeholder-gray-500" placeholder="Message" />
-              <div className="flex items-center space-x-4">
-                <button type="submit" className="px-6 py-3 rounded-md border border-gray-100 text-sm font-medium text-white hover:bg-white hover:text-black transition-colors">Send</button>
-                <span className="text-sm text-gray-500">Or email: <a href="mailto:afroccino.photography@gmail.com" className="underline hover:text-white">afroccino.photography@gmail.com</a></span>
-              </div>
-            </form>
-          </div>
-        </section>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {gallery.map((img) => (
+            <figure key={img.id} className="group overflow-hidden rounded-xl">
+              <motion.img
+                src={img.src}
+                alt={img.alt}
+                className="w-full h-72 object-cover transform transition-transform duration-500 group-hover:scale-105 group-hover:opacity-100 opacity-90"
+                whileHover={{ scale: 1.05 }}
+              />
+              <figcaption className="mt-2 text-xs text-gray-500">
+                Family session — candid moments
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </motion.section>
 
-        <footer className="py-12 flex justify-center text-sm text-gray-600 border-t border-gray-800">
-          © {new Date().getFullYear()} Afroccino — by Fady Azmy
-        </footer>
-      </main>
+      {/* ABOUT SECTION */}
+      <motion.section
+        id="about"
+        className="py-20 border-t border-gray-800 max-w-5xl mx-auto px-6"
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <h3 className="text-xl font-light mb-4 text-white">About</h3>
+        <p className="text-gray-400 leading-relaxed">
+          I’m Fady Azmy — I used to chase the world’s light. Now I capture the
+          one that lives at home. My work blends a traveler’s eye with a father’s
+          heart — turning family life into something artful and real.
+        </p>
+      </motion.section>
+
+      {/* CONTACT SECTION */}
+      <motion.section
+        id="contact"
+        className="py-20 border-t border-gray-800 max-w-5xl mx-auto px-6"
+        initial={{ opacity: 0, y: 80 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        viewport={{ once: true }}
+      >
+        <h3 className="text-xl font-light mb-4 text-white">Contact</h3>
+        <p className="text-gray-400 mb-6">
+          For bookings and inquiries — use the form below or email me directly.
+        </p>
+
+        <form
+          action="https://formspree.io/f/YOUR_FORM_ID"
+          method="POST"
+          className="grid grid-cols-1 gap-4"
+        >
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            className="border border-gray-700 bg-black text-gray-200 rounded-md px-4 py-3 placeholder-gray-500"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            className="border border-gray-700 bg-black text-gray-200 rounded-md px-4 py-3 placeholder-gray-500"
+            required
+          />
+          <textarea
+            name="message"
+            placeholder="Message"
+            className="border border-gray-700 bg-black text-gray-200 rounded-md px-4 py-3 h-32 placeholder-gray-500"
+            required
+          />
+          <button
+            type="submit"
+            className="px-6 py-3 rounded-md border border-gray-100 text-sm font-medium text-white hover:bg-white hover:text-black transition-colors"
+          >
+            Send
+          </button>
+        </form>
+
+        <p className="text-sm text-gray-500 mt-4">
+          Or email:{" "}
+          <a
+            href="mailto:hello@afroccino.com"
+            className="underline hover:text-white"
+          >
+            hello@afroccino.com
+          </a>
+        </p>
+      </motion.section>
+
+      {/* FOOTER */}
+      <footer className="py-12 flex justify-center text-sm text-gray-600 border-t border-gray-800">
+        © {new Date().getFullYear()} Afroccino — by Fady Azmy
+      </footer>
     </div>
   );
 }
